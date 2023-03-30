@@ -59,16 +59,16 @@ void loop() {
   }
   Serial.println();
 
-  if (leds_lido[0] == 0 && leds_lido[1] == 0 && leds_lido[2] == 0 && leds_lido[3] == 0) {
+  if (leds_lido[0] == 0 && leds_lido[1] == 0 && leds_lido[2] == 0) {
     client.publish("grupo2-bancadaA1/leds", "0000"); 
   }
-  else if (leds_lido[0] == 1 && leds_lido[1] == 0 && leds_lido[2] == 0 && leds_lido[3] == 0) {
+  else if (leds_lido[0] == 1 && leds_lido[1] == 0 && leds_lido[2] == 0) {
     client.publish("grupo2-bancadaA1/leds", "0001"); 
   }
-  else if (leds_lido[0] == 0 && leds_lido[1] == 1 && leds_lido[2] == 0 && leds_lido[3] == 0) {
+  else if (leds_lido[0] == 0 && leds_lido[1] == 1 && leds_lido[2] == 0) {
     client.publish("grupo2-bancadaA1/leds", "0010"); 
   }
-  else if (leds_lido[0] == 0 && leds_lido[1] == 0 && leds_lido[2] == 1 && leds_lido[3] == 0) {
+  else if (leds_lido[0] == 0 && leds_lido[1] == 0 && leds_lido[2] == 1) {
     client.publish("grupo2-bancadaA1/leds", "0100"); 
   }
   else {
