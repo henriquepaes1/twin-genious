@@ -22,12 +22,14 @@ unsigned int word_length = 4;
 
 int tempoMQTT = 5000;
 
-
 #define LEDS0 D8
 #define LEDS1 D7
 #define LEDS2 D6
 #define LEDS3 D5
 #define INICIAR D4
+
+/* é necessário definir mais pinos para algumas variáveis que foram criadas,
+mas para isso seria necessario adquirir uma nova placa */
 
 void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
@@ -48,26 +50,33 @@ void loop() {
   leds_lido[1] = digitalRead(LEDS1);
   leds_lido[2] = digitalRead(LEDS2);
   leds_lido[3] = digitalRead(LEDS3);
+  acertou = digitalRead(ACERTOU);
+  perdeu = digitalRead(PERDEU);
+
+
   for(i=0; i<4; i++) {
     Serial.print(leds_lido[i]);
   }
   Serial.println();
 
   if (leds_lido[0] == 0 && leds_lido[1] == 0 && leds_lido[2] == 0 && leds_lido[3] == 0) {
-    client.publish("grupo2-bancadaA1/teste_led0", "0000"); 
+    client.publish("grupo2-bancadaA1/leds", "0000"); 
   }
   else if (leds_lido[0] == 1 && leds_lido[1] == 0 && leds_lido[2] == 0 && leds_lido[3] == 0) {
-    client.publish("grupo2-bancadaA1/teste_led0", "0001"); 
+    client.publish("grupo2-bancadaA1/leds", "0001"); 
   }
   else if (leds_lido[0] == 0 && leds_lido[1] == 1 && leds_lido[2] == 0 && leds_lido[3] == 0) {
-    client.publish("grupo2-bancadaA1/teste_led0", "0010"); 
+    client.publish("grupo2-bancadaA1/leds", "0010"); 
   }
   else if (leds_lido[0] == 0 && leds_lido[1] == 0 && leds_lido[2] == 1 && leds_lido[3] == 0) {
-    client.publish("grupo2-bancadaA1/teste_led0", "0100"); 
+    client.publish("grupo2-bancadaA1/leds", "0100"); 
   }
   else {
-    client.publish("grupo2-bancadaA1/teste_led0", "1000");
+    client.publish("grupo2-bancadaA1/leds", "1000");
   }
+
+  client.publish("grupo2-bancadaA1/acertou", ACERTOU);
+  client.publish("grupo2-bancadaA1/perdeu", PERDEU);
 }
 
 void connect_mqtt() {
@@ -82,7 +91,8 @@ void connect_mqtt() {
         if (client.connect(client_id.c_str(), user.c_str(), passwd.c_str())) {
           Serial.println("Public emqx mqtt broker connected");
           client.subscribe("grupo2-bancadaA1/teste_world");
-          client.subscribe("grupo2-bancadaA1/iniciar");
+          client.subscribe("grupo2-bancadaA1/iniciar"); // se inscreve no topico para controle do sinal iniciar na fpga
+          client.subscribe("grupo2-bancadaA1/reset"); // se inscreve no topico para controle do sinal reset na fpga
         }
         // Failed
         else{
@@ -125,13 +135,76 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
+
   if (strcmp("grupo2-bancadaA1/iniciar", topic)==0 && (char)payload[0]=='1') {
     // A saída do ESP8266 é 5v quando é LOW e 0v quando é HIGH
-    digitalWrite(D4, HIGH);
+    digitalWrite(INICIAR, HIGH);
     delay(3);
-    digitalWrite(D4, LOW);
+    digitalWrite(INICIAR, LOW);
     Serial.println("escreveu");
     
-  }  
+  } 
 
-}
+  if (strcmp("grupo2-bancadaA1/reset", topic)==0 && (char)payload[0]=='1') {
+    // A saída do ESP8266 é 5v quando é LOW e 0v quando é HIGH
+    digitalWrite(RESET, HIGH);
+    delay(3);
+    digitalWrite(RESET, LOW);
+    Serial.println("escreveu");
+  }
+
+  if(strcmp("grupo2-bancadaA1/chaves", topic())){
+      if (leds_lido[0] == 0 && leds_lido[1] == 0 && leds_lido[2] == 0 && leds_lido[3] == 0) {
+        escreveZero();
+        digitalWrite(CHAVES0, LOW);
+        digitalWrite(CHAVES1, LOW);
+        digitalWrite(CHAVES2, LOW);
+        digitalWrite(CHAVES3, LOW);
+      }
+      else if (leds_lido[0] == 1 && leds_lido[1] == 0 && leds_lido[2] == 0 && leds_lido[3] == 0) {
+        digitalWrite(CHAVES0, HIGH);
+        digitalWrite(CHAVES1, LOW);
+        digitalWrite(CHAVES2, LOW);
+        digitalWrite(CHAVES3, LOW);
+        delay(2)
+        digitalWrite(CHAVES0, LOW);
+        digitalWrite(CHAVES1, LOW);
+        digitalWrite(CHAVES2, LOW);
+        digitalWrite(CHAVES3, LOW);
+      }
+      else if (leds_lido[0] == 0 && leds_lido[1] == 1 && leds_lido[2] == 0 && leds_lido[3] == 0) {
+        digitalWrite(CHAVES0, LOW);
+        digitalWrite(CHAVES1, HIGH);
+        digitalWrite(CHAVES2, LOW);
+        digitalWrite(CHAVES3, LOW);
+        delay(2)
+        digitalWrite(CHAVES0, LOW);
+        digitalWrite(CHAVES1, LOW);
+        digitalWrite(CHAVES2, LOW);
+        digitalWrite(CHAVES3, LOW);
+      }
+      else if (leds_lido[0] == 0 && leds_lido[1] == 0 && leds_lido[2] == 1 && leds_lido[3] == 0) {
+        digitalWrite(CHAVES0, LOW);
+        digitalWrite(CHAVES1, LOW);
+        digitalWrite(CHAVES2, HIGH);
+        digitalWrite(CHAVES3, LOW);
+        delay(2)
+        digitalWrite(CHAVES0, LOW);
+        digitalWrite(CHAVES1, LOW);
+        digitalWrite(CHAVES2, LOW);
+        digitalWrite(CHAVES3, LOW);
+      }
+      else {
+        digitalWrite(CHAVES0, LOW);
+        digitalWrite(CHAVES1, LOW);
+        digitalWrite(CHAVES2, LOW);
+        digitalWrite(CHAVES3, HIGH);
+        delay(2)
+        digitalWrite(CHAVES0, LOW);
+        digitalWrite(CHAVES1, LOW);
+        digitalWrite(CHAVES2, LOW);
+        digitalWrite(CHAVES3, LOW);
+      }
+    }
+} 
+
