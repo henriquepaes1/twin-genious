@@ -4,17 +4,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GeniousGameComponent } from './components/genious-game/genious-game.component';
-import { InitialPageComponent } from './components/initial-page/initial-page.component';
-import { ErrorComponent } from './components/error/error.component';
-import { CompleteComponent } from './components/complete/complete.component';
+import { InitialComponent } from './components/initial/initial.component';
+import { ModoComponent } from './components/modo/modo.component';
+import { DificuldadeComponent } from './components/dificuldade/dificuldade.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GeniousGameComponent,
-    InitialPageComponent,
-    ErrorComponent,
-    CompleteComponent
+    InitialComponent,
+    ModoComponent,
+    DificuldadeComponent
   ],
   imports: [
     BrowserModule,
