@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MqttClientServiceService } from 'src/app/services/mqtt-client.service';
 
 @Component({
   selector: 'app-modo',
@@ -7,15 +8,28 @@ import { Router } from '@angular/router';
   styleUrls: ['./modo.component.css']
 })
 export class ModoComponent implements OnInit {
-
-  constructor(private router: Router) { }
+  mqttservice: MqttClientServiceService;
+  modo?: number;
+  
+  constructor(private router: Router, mqttservice: MqttClientServiceService) { 
+    this.mqttservice = mqttservice;
+  }
 
   ngOnInit(): void {
   }
 
-  dificuldade(){
-    this.router.navigateByUrl("/dificuldade")
+  setModo(modo: number) {
+    this.modo = modo;
+    if (modo == 1) {
+      this.mqttservice.doPublish('botoes/', '0001');
+    }
+    if (modo == 2) {
+      this.mqttservice.doPublish('botoes/', '0010');
+    }
+  }
 
+  dificuldade(){
+    this.router.navigateByUrl("/dificuldade");
   }
 
 }
