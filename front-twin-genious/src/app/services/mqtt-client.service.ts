@@ -25,6 +25,7 @@ export class MqttClientServiceService {
     port: 8884,
     path: '/mqtt',
     clean: true, 
+    reconnectPeriod: 1,
     clientId: 'mqttx_597046f4',
     username: 'java-client',
     password: 'garsoft-java',

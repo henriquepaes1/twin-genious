@@ -17,10 +17,8 @@ export const connection: IMqttServiceOptions = {
   hostname: '89027d54046045d3954ec8a3d6c7c9cf.s2.eu.hivemq.cloud',
   port: 8884,
   path: '/mqtt',
-  clean: true,// 保留会话
-  // connectTimeout: 4000, // 超时时间
-  // reconnectPeriod: 4000, // 重连时间间隔
-  // 认证信息
+  clean: true,
+  reconnectPeriod: 1,
   clientId: 'mqttx_597046f4',
   username: 'java-client',
   password: 'garsoft-java',
