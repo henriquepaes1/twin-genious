@@ -4,12 +4,16 @@ import { DificuldadeComponent } from './components/dificuldade/dificuldade.compo
 import { GeniousGameComponent } from './components/genious-game/genious-game.component';
 import { InitialComponent } from './components/initial/initial.component';
 import { ModoComponent } from './components/modo/modo.component';
+import { AcertouComponent } from './components/acertou/acertou.component';
+import { ErrouComponent } from './components/errou/errou.component';
 
 const routes: Routes = [
   {path: '', component: InitialComponent},
   {path: 'jogo', component: GeniousGameComponent},
   {path: 'modo', component: ModoComponent},
-  {path: 'dificuldade', component: DificuldadeComponent}
+  {path: 'dificuldade', component: DificuldadeComponent},
+  {path: 'acerto', component: AcertouComponent},
+  {path: 'erro', component: ErrouComponent}
 ];
 
 @NgModule({

@@ -93,12 +93,12 @@ export class GeniousGameComponent implements OnInit {
 
   ganhouJogo() {
     console.log("GANHOU");
-    // va para tela de vitoria
+    this.router.navigateByUrl("acerto")
   }
 
   perdeuJogo() {
     console.log("PERDEU");
-    // va para tela de derrota
+    this.router.navigateByUrl("erro")
   }
 
 }

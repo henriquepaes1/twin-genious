@@ -12,6 +12,8 @@ import { DificuldadeComponent } from './components/dificuldade/dificuldade.compo
 
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 import { MqttClientServiceService } from './services/mqtt-client.service';
+import { AcertouComponent } from './components/acertou/acertou.component';
+import { ErrouComponent } from './components/errou/errou.component';
 
 export const connection: IMqttServiceOptions = {
   hostname: '89027d54046045d3954ec8a3d6c7c9cf.s2.eu.hivemq.cloud',
@@ -31,7 +33,9 @@ export const connection: IMqttServiceOptions = {
     GeniousGameComponent,
     InitialComponent,
     ModoComponent,
-    DificuldadeComponent
+    DificuldadeComponent,
+    AcertouComponent,
+    ErrouComponent
   ],
   imports: [
     BrowserModule,
