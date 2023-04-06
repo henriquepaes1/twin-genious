@@ -101,4 +101,8 @@ export class GeniousGameComponent implements OnInit {
     this.router.navigateByUrl("erro")
   }
 
+  acionaReset(){
+    this.mqttservice.doPublish("reset/", "1")
+  }
+
 }

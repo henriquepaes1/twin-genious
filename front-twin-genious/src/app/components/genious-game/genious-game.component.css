@@ -169,7 +169,6 @@ html{
 /**********************************/
 
 .gui {
-    padding-left: 6.8rem;
     padding-top: 2rem;
     display: flex;
     flex-wrap: wrap;
@@ -177,7 +176,8 @@ html{
 }
 
 .group {
-    margin-right: 2.2rem;
+    display: inline-block;
+    margin: 0 auto;
 
 }
 

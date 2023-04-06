@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MqttClientServiceService } from 'src/app/services/mqtt-client.service';
 
 @Component({
   selector: 'app-errou',
@@ -6,10 +8,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./errou.component.css']
 })
 export class ErrouComponent implements OnInit {
+  mqttservice: MqttClientServiceService;
 
-  constructor() { }
+  constructor(private router: Router, mqttservice: MqttClientServiceService) {
+    this.mqttservice = mqttservice
+   }
 
   ngOnInit(): void {
+  }
+
+  jogarNovamente(){
+    this.mqttservice.doPublish("reset/", "1")
+    
+    setTimeout(() => {
+      this.mqttservice.doPublish("iniciar/", "1")
+    }, 150)
+
+    this.router.navigateByUrl("modo")
+  }
+
+  voltarAoMenu(){
+    this.mqttservice.doPublish("reset/", "1")
+    this.router.navigateByUrl("/")
   }
 
 }
