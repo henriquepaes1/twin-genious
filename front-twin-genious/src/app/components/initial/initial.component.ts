@@ -12,12 +12,6 @@ export class InitialComponent implements OnInit {
 
   constructor(private router: Router, mqttservice: MqttClientServiceService) { 
     this.mqttservice = mqttservice;
-    this.mqttservice.createConnection();
-    this.mqttservice.doSubscribe('leds/');
-    this.mqttservice.doSubscribe('ganhou/');
-    this.mqttservice.doSubscribe('perdeu/');
-    console.log("abc");
-    
   }
 
   ngOnInit(): void {
