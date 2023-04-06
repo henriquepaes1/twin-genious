@@ -15,21 +15,22 @@ export class ErrouComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.mqttservice.doPublish("reset/", '1')  
   }
 
   jogarNovamente(){
-    this.mqttservice.doPublish("reset/", "1")
+    this.mqttservice.doPublish("reset/", '1')
     
     setTimeout(() => {
-      this.mqttservice.doPublish("iniciar/", "1")
+      this.mqttservice.doPublish("iniciar/", '1')
     }, 150)
 
     this.router.navigateByUrl("modo")
   }
 
   voltarAoMenu(){
-    this.mqttservice.doPublish("reset/", "1")
+    console.log('reset')
+    this.mqttservice.doPublish("reset/", '1')
     this.router.navigateByUrl("/")
   }
-
 }

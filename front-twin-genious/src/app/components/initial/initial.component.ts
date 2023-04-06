@@ -17,6 +17,7 @@ export class InitialComponent implements OnInit {
     this.mqttservice.doSubscribe('ganhou/');
     this.mqttservice.doSubscribe('perdeu/');
     console.log("abc");
+    
   }
 
   ngOnInit(): void {

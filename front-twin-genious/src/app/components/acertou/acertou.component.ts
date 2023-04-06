@@ -15,6 +15,10 @@ export class AcertouComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.mqttservice.doPublish("reset/", '1')
+    }, 1000)
+    
   }
 
   jogarNovamente(){

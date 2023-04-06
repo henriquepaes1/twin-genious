@@ -103,6 +103,10 @@ export class GeniousGameComponent implements OnInit {
 
   acionaReset(){
     this.mqttservice.doPublish("reset/", "1")
-  }
+    setTimeout(() => {
+      this.router.navigateByUrl("/")
 
+    }, 10)
+    
+  }
 }
