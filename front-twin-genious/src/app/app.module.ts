@@ -1,6 +1,7 @@
 import { ListenerService } from './services/listener.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +15,7 @@ import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 import { MqttClientServiceService } from './services/mqtt-client.service';
 import { AcertouComponent } from './components/acertou/acertou.component';
 import { ErrouComponent } from './components/errou/errou.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const connection: IMqttServiceOptions = {
   hostname: '89027d54046045d3954ec8a3d6c7c9cf.s2.eu.hivemq.cloud',
@@ -35,12 +37,14 @@ export const connection: IMqttServiceOptions = {
     ModoComponent,
     DificuldadeComponent,
     AcertouComponent,
-    ErrouComponent
+    ErrouComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MqttModule.forRoot(connection)
+    MqttModule.forRoot(connection),
+    FormsModule
   ],
   providers: [
     MqttClientServiceService,

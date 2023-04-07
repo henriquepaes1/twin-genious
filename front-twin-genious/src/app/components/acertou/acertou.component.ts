@@ -33,7 +33,7 @@ export class AcertouComponent implements OnInit {
 
   voltarAoMenu(){
     this.mqttservice.doPublish("reset/", "1")
-    this.router.navigateByUrl("/")
+    this.router.navigateByUrl("/inicio")
   }
 
 }

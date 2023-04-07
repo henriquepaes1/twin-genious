@@ -31,6 +31,6 @@ export class ErrouComponent implements OnInit {
   voltarAoMenu(){
     console.log('reset')
     this.mqttservice.doPublish("reset/", '1')
-    this.router.navigateByUrl("/")
+    this.router.navigateByUrl("/inicio")
   }
 }
