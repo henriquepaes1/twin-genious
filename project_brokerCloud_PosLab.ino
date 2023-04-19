@@ -21,18 +21,23 @@ char msg[MSG_BUFFER_SIZE];
 int leds_lido[2];
 int value = 0;
 unsigned int word_length = 4;
+int ganhou;
+int perdeu;
 
 int tempoMQTT = 5000;
 
 #define LEDS0 D6
 #define LEDS1 D5
 #define LEDS2 D0
-#define INICIAR D8
-#define RESET D7
+// Não há mais sinais de iniciar e reset
+//#define INICIAR D8
+//#define RESET D7
 #define CHAVES0 D4 
 #define CHAVES1 D3
 #define CHAVES2 D2
 #define CHAVES3 D1
+#define PERDEU D7
+#define GANHOU D8
 
 /* é necessário definir mais pinos para algumas variáveis que foram criadas,
 mas para isso seria necessario adquirir uma nova placa */
@@ -48,12 +53,14 @@ void setup() {
   pinMode(LEDS0, INPUT);
   pinMode(LEDS1, INPUT);
   pinMode(LEDS2, INPUT);
-  pinMode(INICIAR, OUTPUT);
-  pinMode(RESET, OUTPUT);
+//pinMode(INICIAR, OUTPUT);
+//pinMode(RESET, OUTPUT);
   pinMode(CHAVES0, OUTPUT);
   pinMode(CHAVES1, OUTPUT);
   pinMode(CHAVES2, OUTPUT);
   pinMode(CHAVES3, OUTPUT);
+  pinMode(GANHOU, INPUT);
+  pinMode(PERDEU, INPUT);
 }
 
 void loop() {
@@ -62,9 +69,8 @@ void loop() {
   leds_lido[0] = digitalRead(LEDS0);
   leds_lido[1] = digitalRead(LEDS1);
   leds_lido[2] = digitalRead(LEDS2);
-//  acertou = digitalRead(ACERTOU);
-//  perdeu = digitalRead(PERDEU);
-
+  ganhou = digitalRead(GANHOU);
+  perdeu = digitalRead(PERDEU);
 
   for(int i=0; i<3; i++) {
     if(leds_lido[0] != 0 && leds_lido[1] != 0 && leds_lido[2] != 0){
@@ -88,11 +94,16 @@ void loop() {
     client.publish("leds/", "1000");
     delay(1000);
   }
+  
+
+  if (ganhou == 1) {
+    client.publish("ganhou/", "1"); 
+  }
+  if (perdeu == 1) {
+    client.publish("perdeu/", "1");  
+  }
 
   delay(1);
-  
-//  client.publish("acertou/", '1');
-//  client.publish("perdeu/", '1');
 }
 
 void connect_mqtt() {
@@ -153,19 +164,29 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println();
 
   if (strcmp("iniciar/", topic)==0 && (char)payload[0]=='1') {
-    // A saída do ESP8266 é 5v quando é LOW e 0v quando é HIGH
-    digitalWrite(INICIAR, HIGH);
-    delay(150);
-    digitalWrite(INICIAR, LOW);
-    Serial.println("escreveu");
+    digitalWrite(CHAVES0, LOW);
+    digitalWrite(CHAVES1, HIGH);
+    digitalWrite(CHAVES2, LOW);
+    digitalWrite(CHAVES3, HIGH);
+    delay(100);
+    digitalWrite(CHAVES0, LOW);
+    digitalWrite(CHAVES1, LOW);
+    digitalWrite(CHAVES2, LOW);
+    digitalWrite(CHAVES3, LOW);
+    Serial.println("iniciou");
   } 
 
   if (strcmp("reset/", topic)==0 && (char)payload[0]=='1') {
-    // A saída do ESP8266 é 5v quando é LOW e 0v quando é HIGH
-    digitalWrite(RESET, HIGH);
-    delay(150);
-    digitalWrite(RESET, LOW);
-    Serial.println("escreveu");
+    digitalWrite(CHAVES0, HIGH);
+    digitalWrite(CHAVES1, HIGH);
+    digitalWrite(CHAVES2, LOW);
+    digitalWrite(CHAVES3, HIGH);
+    delay(100);
+    digitalWrite(CHAVES0, LOW);
+    digitalWrite(CHAVES1, LOW);
+    digitalWrite(CHAVES2, LOW);
+    digitalWrite(CHAVES3, LOW);
+    Serial.println("resetou");
   }
 
   if(strcmp("botoes/", topic) == 0){
